@@ -46,30 +46,12 @@
 
 
 
-const express = require("express");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const mongoose = require("mongoose");
 
-const app = express();
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
-if (!process.env.MONGODB_URI) {
-  console.error("❌ MONGODB_URI not set!");
-}
-
-app.use(session({
-  secret: process.env.SESSION_SECRET || "defaultSecret",
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    collectionName: "sessions"
-  }),
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24,
-    secure: false,
-    httpOnly: true
-  }
-}));
 
 app.get("/", (req, res) => {
   res.send("✅ Session store connected!");
