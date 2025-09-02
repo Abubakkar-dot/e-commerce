@@ -48,7 +48,8 @@
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-
+const express = require("express");
+const app = express();
 app.use(session({
   secret: "yourSecretKey", // change to a strong secret
   resave: false,
