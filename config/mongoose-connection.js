@@ -46,19 +46,34 @@
 
 
 
+const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const express = require("express");
+
 const app = express();
+
+if (!process.env.MONGODB_URI) {
+  console.error("❌ MONGODB_URI not set!");
+}
+
 app.use(session({
-  secret: "yourSecretKey", // change to a strong secret
+  secret: process.env.SESSION_SECRET || "defaultSecret",
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI, // use your MongoDB connection
+    mongoUrl: process.env.MONGODB_URI,
     collectionName: "sessions"
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // 1 day
+    maxAge: 1000 * 60 * 60 * 24,
+    secure: false,
+    httpOnly: true
   }
 }));
+
+app.get("/", (req, res) => {
+  res.send("✅ Session store connected!");
+});
+
+app.listen(8080, () => console.log("Listening on 8080"));
+
