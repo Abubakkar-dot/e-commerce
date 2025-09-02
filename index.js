@@ -5,12 +5,12 @@ const expressSession = require("express-session");
 const flash = require("connect-flash");
 require("dotenv").config();
 
-const db = require("../config/mongoose-connection");
+const db = require("./config/mongoose-connection");
 
-const ownerRouter = require("../routes/ownerRouter");
-const usersRouter = require("../routes/usersRouter");
-const productsRouter = require("../routes/productsRouter");
-const indexRouter = require("../routes/indexRouter");
+const ownerRouter = require("./routes/ownerRouter");
+const usersRouter = require("./routes/usersRouter");
+const productsRouter = require("./routes/productsRouter");
+const indexRouter = require("./routes/indexRouter");
 
 const app = express();
 
@@ -44,6 +44,4 @@ module.exports = app;
 
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log("Server is running on port " + port);
-});
+app.listen(port, () => console.log('Listening on', port));
